@@ -3,6 +3,7 @@ package com.lauracercas.moviecards.controller;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.movie.MovieService;
+import com.lauracercas.moviecards.util.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,21 +31,24 @@ public class MovieController {
     @GetMapping("movies/new")
     public String newMovie(Model model) {
         model.addAttribute("movie", new Movie());
-        model.addAttribute("title", "Nueva Película");
+        model.addAttribute("title", Messages.NEW_MOVIE_TITLE);
         return "movies/form";
     }
 
     @PostMapping("saveMovie")
     public String saveMovie(@ModelAttribute Movie movie, BindingResult result, Model model) {
-        model.addAttribute("title", "Nuevo Movie");
         if (result.hasErrors()) {
             return "movies/form";
         }
         Movie movieSaved = movieService.save(movie);
-        model.addAttribute("message", "Película guardada correctamente");
+        if (movieSaved.getId() != null) {
+            model.addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
+        } else {
+            model.addAttribute("message", Messages.SAVED_MOVIE_SUCCESS);
+        }
 
         model.addAttribute("movie", movieSaved);
-        model.addAttribute("title", "Editar Película");
+        model.addAttribute("title", Messages.EDIT_MOVIE_TITLE);
         return "movies/form";
     }
 
@@ -55,7 +59,7 @@ public class MovieController {
         model.addAttribute("movie", movie);
         model.addAttribute("actors", actors);
 
-        model.addAttribute("title", "Editar Película");
+        model.addAttribute("title", Messages.EDIT_MOVIE_TITLE);
 
         return "movies/form";
     }

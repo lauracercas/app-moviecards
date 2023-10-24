@@ -2,6 +2,7 @@ package com.lauracercas.moviecards.controller;
 
 import com.lauracercas.moviecards.model.Card;
 import com.lauracercas.moviecards.service.card.CardService;
+import com.lauracercas.moviecards.util.Messages;
 import org.springframework.ui.Model;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
@@ -48,7 +49,7 @@ public class CardController {
         String result = cardService.registerActorInMovie(card);
 
         model.addAttribute("message", result);
-        if (!result.equals("Se ha registrado el actor en la pelicula. Ficha creada correctamente")){
+        if (!result.equals(Messages.CARD_REGISTRATION_SUCCESS)){
             prepareCardInfoForm(model);
             return "cards/registerActorMovieForm";
         }

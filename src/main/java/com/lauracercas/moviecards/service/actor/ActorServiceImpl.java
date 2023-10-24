@@ -14,6 +14,10 @@ public class ActorServiceImpl implements ActorService {
     @Autowired
     ActorDao actorDao;
 
+    public ActorServiceImpl(ActorDao actorDao) {
+        this.actorDao = actorDao;
+    }
+
     @Override
     public List<Actor> getAllActors() {
         return actorDao.getAllActors();
