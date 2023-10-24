@@ -6,6 +6,7 @@ import com.lauracercas.moviecards.model.Card;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.actor.ActorService;
 import com.lauracercas.moviecards.service.movie.MovieService;
+import com.lauracercas.moviecards.util.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,10 @@ public class CardServiceImpl implements CardService {
     @Autowired
     MovieService movieService;
 
+    public CardServiceImpl(ActorService actorService, MovieService movieService) {
+        this.actorService = actorService;
+        this.movieService = movieService;
+    }
 
     @Override
     public String registerActorInMovie(Card card) {
@@ -28,16 +33,16 @@ public class CardServiceImpl implements CardService {
         Movie movie = movieService.getMovieById(movieId);
 
         if (actor == null || movie == null) {
-            return "Ha ocurrido un error";
+            return Messages.ERROR_MESSAGE;
         }
 
         if (movie.existActorInMovie(actor)) {
-            return "Ya se ha inscrito este actor en esta película";
+            return Messages.CARD_ALREADY_EXISTS;
         }
 
         movie.addActor(actor);
         movieService.save(movie);
-        return "Se ha registrado el actor en la película. Ficha creada correctamente";
+        return Messages.CARD_REGISTRATION_SUCCESS;
     }
 
 
