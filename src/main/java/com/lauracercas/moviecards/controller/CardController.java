@@ -28,6 +28,12 @@ public class CardController {
     @Autowired
     private CardService cardService;
 
+    public CardController(MovieService movieService, ActorService actorService, CardService cardService) {
+        this.movieService = movieService;
+        this.actorService = actorService;
+        this.cardService = cardService;
+    }
+
     @GetMapping("/registerActorMovie")
     public String showInfoForm(Model model) {
         prepareCardInfoForm(model);
@@ -45,11 +51,11 @@ public class CardController {
     }
 
     @PostMapping("register")
-    public String registerCard(@ModelAttribute Card card,  Model model) {
+    public String registerCard(@ModelAttribute Card card, Model model) {
         String result = cardService.registerActorInMovie(card);
 
         model.addAttribute("message", result);
-        if (!result.equals(Messages.CARD_REGISTRATION_SUCCESS)){
+        if (!result.equals(Messages.CARD_REGISTRATION_SUCCESS)) {
             prepareCardInfoForm(model);
             return "cards/registerActorMovieForm";
         }

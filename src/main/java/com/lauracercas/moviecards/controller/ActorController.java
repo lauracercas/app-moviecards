@@ -22,6 +22,10 @@ public class ActorController {
     @Autowired
     ActorService actorService;
 
+    public ActorController(ActorService actorService) {
+        this.actorService = actorService;
+    }
+
     @GetMapping("/actors")
     public String getActorsList(Model model) {
         model.addAttribute("actors", actorService.getAllActors());

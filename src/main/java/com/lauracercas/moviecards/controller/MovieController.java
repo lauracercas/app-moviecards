@@ -22,6 +22,10 @@ public class MovieController {
     @Autowired
     MovieService movieService;
 
+    public MovieController(MovieService movieService) {
+        this.movieService = movieService;
+    }
+
     @GetMapping("/movies")
     public String getMoviesList(Model model) {
         model.addAttribute("movies", movieService.getAllMovies());
