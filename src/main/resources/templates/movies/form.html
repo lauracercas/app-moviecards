@@ -9,7 +9,7 @@
 
 <div class="container mb-5">
     <h2 th:text="${title}"
-        class="text-secondary border border-success border-top-0 border-left-0 border-right-0"></h2>
+        class="title text-secondary border border-success border-top-0 border-left-0 border-right-0"></h2>
     <div th:if="${message}" class='alert alert-success' role='alert'>
         <p th:text="${message}"></p>
     </div>
@@ -68,13 +68,13 @@
     </form>
     <div th:if="${movie.id!=null}">
         <hr>
-        <div class="mt-3" th:if="${actors != null and not #lists.isEmpty(actors)}">
+        <div class="actorClass mt-3" th:if="${actors != null}">
             <h4 th:text="'Actores que han participado en la película ' + ${movie.title}"></h4>
             <ul>
                 <li th:each="actor : ${actors}" th:text="${actor.name}"></li>
             </ul>
         </div>
-        <div class="mt--3" th:if="${actors == null or #lists.isEmpty(actors)}">
+        <div class="noActorClass mt-3" th:if="${actors == null or #lists.isEmpty(actors)}">
             <h4 th:text="'No hay ningun actor registrado que haya participado en esta película '"></h4>
         </div>
     </div>

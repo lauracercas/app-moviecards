@@ -20,7 +20,7 @@ import java.util.List;
 public class ActorController {
 
     @Autowired
-    ActorService actorService;
+    private final ActorService actorService;
 
     public ActorController(ActorService actorService) {
         this.actorService = actorService;

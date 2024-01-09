@@ -1,17 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <title>Ejemplo Spring Boot con Thymeleaf</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1>Lista de Entidades</h1>-->
-<!--<ul>-->
-<!--    <li th:each="actor : ${actors}">-->
-<!--        <span th:text="${actor.name}"></span>-->
-<!--    </li>-->
-<!--</ul>-->
-<!--</body>-->
-<!--</html>-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
@@ -28,7 +14,7 @@
     <div class="card-group text-center">
         <div class="card">
             <div class="card-body">
-                <h3 class="card-title">Inscripción Actor en Pelicula</h3>
+                <h3 class="card-title registerActorMovie">Inscripción Actor en Pelicula</h3>
                 <a class="page-link" th:href="@{/registerActorMovie}">
                     Inscripción Actor en Pelicula
                 </a>
@@ -39,7 +25,7 @@
     <div class="card-group text-center">
         <div class="card">
             <div class="card-body">
-                <h3 class="card-title">Listado actores</h3>
+                <h3 class="card-title actorList">Listado actores</h3>
                 <a class="page-link" th:href="@{/actors}">
                     Listado de actores
                 </a>
@@ -48,7 +34,7 @@
 
         <div class="card">
             <div class="card-body">
-                <h3 class="card-title">Nuevo Actor</h3>
+                <h3 class="card-title newActor">Nuevo Actor</h3>
                 <a class="page-link" th:href="@{/actors/new}">
                     Crear nuevo actor
                 </a>
@@ -59,7 +45,7 @@
     <div class="card-group text-center">
         <div class="card">
             <div class="card-body">
-                <h3 class="card-title">Listado peliculas</h3>
+                <h3 class="card-title moviesList">Listado peliculas</h3>
                 <a class="page-link" th:href="@{/movies}">
                     Listado de peliculas
                 </a>
@@ -69,7 +55,7 @@
 
         <div class="card">
             <div class="card-body">
-                <h3 class="card-title">Nueva pelicula</h3>
+                <h3 class="card-title newMovie">Nueva pelicula</h3>
                 <a class="page-link" th:href="@{/movies/new}">
                     Crear nueva pelicula
                 </a>
