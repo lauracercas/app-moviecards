@@ -16,7 +16,7 @@ jobs:
         distribution: 'adopt'
         java-version: '17'
     
-- name: Set up Chrome Driver
+    - name: Set up Chrome Driver
       uses: nanasess/setup-chromedriver@master
       env:
         CHROME_VERSION: 89.0.4389.23-1
