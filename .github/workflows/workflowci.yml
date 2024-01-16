@@ -15,6 +15,12 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '17'
+    
+    - name: Set up Chrome Driver
+      uses: nanasess/setup-chromedriver@master
 
-    - name: Build with Maven
-      run: mvn clean verify
+    - name: Run Selenium Test
+      run: |
+        export CHROME_BIN=/usr/bin/google-chrome
+        export DISPLAY=:99.0
+        mvn test -Dtest=MovieE2ETest
