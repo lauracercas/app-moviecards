@@ -36,4 +36,4 @@ jobs:
         sudo apt-get install -y xvfb # Install X Virtual Frame Buffer
         export DISPLAY=:99.0
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & # Start Xvfb
-        mvn test -Dtest=MovieE2ETest
+        mvn test -Dtest=ActorE2ETest
