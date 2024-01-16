@@ -16,11 +16,19 @@ jobs:
         distribution: 'adopt'
         java-version: '17'
     
-    - name: Set up Chrome Driver
+- name: Set up Chrome Driver
       uses: nanasess/setup-chromedriver@master
+      env:
+        CHROME_VERSION: 89.0.4389.23-1
+
+    - name: Start application
+      run: |
+        mvn spring-boot:run &
+        sleep 30 # give Spring Boot time to start
 
     - name: Run Selenium Test
       run: |
-        export CHROME_BIN=/usr/bin/google-chrome
+        sudo apt-get install -y xvfb # Install X Virtual Frame Buffer
         export DISPLAY=:99.0
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & # Start Xvfb
         mvn test -Dtest=MovieE2ETest
