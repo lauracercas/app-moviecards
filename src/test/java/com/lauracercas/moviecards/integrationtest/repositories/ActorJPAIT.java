@@ -1,52 +1,42 @@
 package com.lauracercas.moviecards.integrationtest.repositories;
 
-import com.lauracercas.moviecards.integrationtest.FlywayTestConfiguration;
-import com.lauracercas.moviecards.integrationtest.TestContainersDatabaseConfig;
+import com.lauracercas.moviecards.integrationtest.SpringTest;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.repositories.ActorJPA;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
-@ActiveProfiles("test")
-@ContextConfiguration(classes = FlywayTestConfiguration.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ActorJPAIT extends TestContainersDatabaseConfig {
+public class ActorJPAIT extends SpringTest {
 
-    @Autowired
-    ActorJPA actorJPA;
 
-    @Test
-    public void debeCrearYRecuperarActor() {
-        // Crear un nuevo actor
-        Actor actor = new Actor();
-        actor.setName("John Doe");
+ @Test
+ @Transactional @Rollback
+ public void pruebaConexion(){
+ assertTrue(session().isConnected());
+ }
 
-        // Guardar el actor en la base de datos
-        actorJPA.save(actor);
+ @Test
+ @Transactional
+ public void testCreateActor() {
+ Actor actor = new Actor();
+ actor.setName("actor");
+ actor.setBirthDate(new Date());
 
-        // Recuperar el actor por el ID
-        Optional<Actor> actorRecuperado = actorJPA.findById(actor.getId());
+ session().persist(actor);
+ session().flush();
 
-        // Verificar que el actor se haya guardado correctamente
-        Assertions.assertTrue(actorRecuperado.isPresent());
-        assertEquals(actor.getName(), actorRecuperado.get().getName());
-    }
+ Actor foundActor = session().find(Actor.class, actor.getId());
 
-//    @Test
-//    void shouldFindActor() {
-//        Actor actor = actorJPA.findById(1).orElse(null);
-//        assert actor != null;
-//        assertEquals("Actor1",actor.getName());
-//
-//    }
-}
+ assertEquals(actor, foundActor);
+ }
+
+ }
