@@ -3,7 +3,6 @@ package com.lauracercas.moviecards.model;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -20,10 +19,7 @@ public class Actor {
     private Date birthDate;
 
     private String country;
-    //
-//    @ManyToMany(mappedBy = "actors")
-////    @JsonIgnoreProperties("actors")
-//    private List<Movie> movies = new ArrayList<>();
+
     @ManyToMany(mappedBy = "actors")
     private List<Movie> movies;
 
