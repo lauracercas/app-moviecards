@@ -26,7 +26,7 @@ public class ActorE2ETest {
         System.setProperty("webdriver.chrome.driver", System.getenv("CHROME_DRIVER_PATH"));
 
         // System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
     }
 
     @AfterEach
