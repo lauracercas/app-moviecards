@@ -7,33 +7,36 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import static com.lauracercas.moviecards.util.Messages.NEW_MOVIE_TITLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 public class MovieE2ETest {
-    private final WebDriver driver = new ChromeDriver();
-
-    private AutoCloseable closeable;
+    private WebDriver driver;
 
     @BeforeEach
     void setUp() {
-        closeable = openMocks(this);
-        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        System.setProperty("webdriver.chrome.driver", System.getenv("CHROME_DRIVER_PATH"));
+
+        // System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        driver = new ChromeDriver();
     }
 
     @AfterEach
-    void tearDown() throws Exception {
-        closeable.close();
+    void tearDown() {
         driver.quit();
     }
 
     @Test
     public void testPageLoadAndForm() {
         driver.get("http://localhost:9002/movies/new");
-        assertEquals("FichasPeliculasApp | Aplicación de gestión de fichas de películas",driver.getTitle());
+        assertEquals("FichasPeliculasApp | Aplicación de gestión de fichas de películas", driver.getTitle());
 
         assertTrue(driver.findElement(By.id("title")).isDisplayed());
         assertTrue(driver.findElement(By.id("year")).isDisplayed());
