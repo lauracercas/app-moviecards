@@ -33,6 +33,9 @@ jobs:
           java-version: "17"
           distribution: "adopt"
 
+      - name: Install dependencies
+        run: sudo apt-get install -y libxss1 libappindicator1 libindicator7
+
       - name: Setup ChromeDriver
         uses: nanasess/setup-chromedriver@master
 
@@ -41,6 +44,13 @@ jobs:
 
       - name: Run application
         run: nohup java -jar target/moviecards.jar &
+
+      - name: Wait for application to start
+        run: |
+          until $(curl --output /dev/null --silent --head --fail http://localhost:9002/health); do
+            printf '.'
+            sleep 5
+          done
 
       - name: Run e2e tests
         run: mvn test -Dtest="*E2ETest"
