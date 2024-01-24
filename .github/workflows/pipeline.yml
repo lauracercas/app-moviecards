@@ -49,7 +49,7 @@ jobs:
   #       run: mvn test -Dtest="*E2ETest"
   #       env:
   #         CHROME_DRIVER_PATH: /usr/local/bin/chromedriver
-  integration-tests:
+  tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -61,6 +61,18 @@ jobs:
         with:
           java-version: "17"
           distribution: "adopt"
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+      - name: Run application
+        run: nohup java -jar target/moviecards-0.0.1-SNAPSHOT.jar &
+      - name: Install Google Chrome
+        run: |
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          sudo apt --fix-broken install -y
+
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@master
 
       - name: Run tests
         run: mvn clean verify
