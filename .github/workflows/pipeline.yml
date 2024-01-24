@@ -43,7 +43,7 @@ jobs:
         run: mvn clean package -DskipTests
 
       - name: Run application
-        run: nohup java -jar target/moviecards.jar &
+        run: nohup java -jar target/moviecards-0.0.1-SNAPSHOT.jar &
 
       - name: Wait for application to start
         run: |
