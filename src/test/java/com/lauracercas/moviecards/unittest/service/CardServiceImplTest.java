@@ -1,9 +1,10 @@
-package com.lauracercas.moviecards.service.card;
+package com.lauracercas.moviecards.unittest.service;
 
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Card;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.actor.ActorService;
+import com.lauracercas.moviecards.service.card.CardServiceImpl;
 import com.lauracercas.moviecards.service.movie.MovieService;
 import com.lauracercas.moviecards.util.Messages;
 import org.junit.jupiter.api.AfterEach;

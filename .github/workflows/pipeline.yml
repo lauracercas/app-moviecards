@@ -20,7 +20,7 @@ jobs:
         run: mvn clean package
 
       - name: Run unit tests
-        run: mvn test -Dtest="*UnitTest"
+        run: mvn test -Dtest="unittest.controller.*Test,unittest.service.*Test"
 
   # end-to-end-tests:
   #   needs: unit-tests

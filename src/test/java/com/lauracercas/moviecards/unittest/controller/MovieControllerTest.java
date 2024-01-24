@@ -1,5 +1,6 @@
-package com.lauracercas.moviecards.controller;
+package com.lauracercas.moviecards.unittest.controller;
 
+import com.lauracercas.moviecards.controller.MovieController;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.movie.MovieService;
