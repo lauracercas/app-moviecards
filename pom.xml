@@ -54,34 +54,30 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>2.2.224</version>
-			<scope>test</scope>
+			<version>1.4.200</version>
 		</dependency>
 
-
 	</dependencies>
+	<profiles>
+		<profile>
+		  <id>dev</id>
+		  <properties>
+			  <spring.properties.file>application.properties</spring.properties.file>
+		  </properties>
+		</profile>
+		<profile>
+		  <id>test</id>
+		  <properties>
+			  <spring.properties.file>application-test.properties</spring.properties.file>
+		  </properties>
+		</profile>
+	  </profiles>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<profiles>
-					  <profile>
-						<id>dev</id>
-						<properties>
-							<spring.properties.file>application.properties</spring.properties.file>
-						</properties>
-					  </profile>
-					  <profile>
-						<id>test</id>
-						<properties>
-							<spring.properties.file>application-test.properties</spring.properties.file>
-						</properties>
-					  </profile>
-					</profiles>
-				  </configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
