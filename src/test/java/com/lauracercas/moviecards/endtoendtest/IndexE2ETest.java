@@ -17,14 +17,14 @@ public class IndexE2ETest {
 
     @BeforeEach
     void setUp() {
-         ChromeOptions options = new ChromeOptions();
-         options.addArguments("--headless");
-         options.addArguments("--no-sandbox");
-         options.addArguments("--disable-dev-shm-usage");
-         System.setProperty("webdriver.chrome.driver", System.getenv("CHROME_DRIVER_PATH"));
+        //  ChromeOptions options = new ChromeOptions();
+        //  options.addArguments("--headless");
+        //  options.addArguments("--no-sandbox");
+        //  options.addArguments("--disable-dev-shm-usage");
+        //  System.setProperty("webdriver.chrome.driver", System.getenv("CHROME_DRIVER_PATH"));
 
-//        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-        driver = new ChromeDriver(options);
+       System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        driver = new ChromeDriver();
     }
 
     @AfterEach
