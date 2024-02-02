@@ -11,6 +11,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import io.github.bonigarcia.wdm.WebDriverManager;
+
 
 public class IndexE2ETest {
     private WebDriver driver;
@@ -24,6 +26,8 @@ public class IndexE2ETest {
         //  System.setProperty("webdriver.chrome.driver", System.getenv("CHROME_DRIVER_PATH"));
 
        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        WebDriverManager.chromedriver().setup();
+
         driver = new ChromeDriver(options);
     }
 
