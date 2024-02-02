@@ -9,10 +9,10 @@ import java.util.Objects;
 @Entity
 public class Movie {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String title;
-    private Integer year;
+    private Integer releaseYear;
     private Integer duration;
     private String country;
     private String director;
@@ -26,6 +26,9 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "actor_id")
     )
     private List<Actor> actors;
+    // @ManyToMany(mappedBy = "movies")
+    // private Set<Actor> actors = new HashSet<>();
+
 
     public Integer getId() {
         return id;
@@ -43,12 +46,12 @@ public class Movie {
         this.title = title;
     }
 
-    public Integer getYear() {
-        return year;
+    public Integer getReleaseYear() {
+        return releaseYear;
     }
 
-    public void setYear(Integer year) {
-        this.year = year;
+    public void setReleaseYear(Integer year) {
+        this.releaseYear = year;
     }
 
     public Integer getDuration() {
@@ -105,12 +108,12 @@ public class Movie {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
-        return Objects.equals(id, movie.id) && Objects.equals(title, movie.title) && Objects.equals(year, movie.year) && Objects.equals(duration, movie.duration) && Objects.equals(country, movie.country) && Objects.equals(director, movie.director) && Objects.equals(genre, movie.genre) && Objects.equals(sinopsis, movie.sinopsis);
+        return Objects.equals(id, movie.id) && Objects.equals(title, movie.title) && Objects.equals(releaseYear, movie.releaseYear) && Objects.equals(duration, movie.duration) && Objects.equals(country, movie.country) && Objects.equals(director, movie.director) && Objects.equals(genre, movie.genre) && Objects.equals(sinopsis, movie.sinopsis);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, year, duration, country, director, genre, sinopsis);
+        return Objects.hash(id, title, releaseYear, duration, country, director, genre, sinopsis);
     }
 
     public void addActor(Actor actor) {
@@ -128,4 +131,5 @@ public class Movie {
             getActors().remove(actor);
         }
     }
+
 }
