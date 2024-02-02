@@ -22,7 +22,7 @@ jobs:
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo dpkg -i google-chrome-stable_current_amd64.deb
           sudo apt --fix-broken install -y
-      - name: Install WebDriver
+      - name: Install Google Chrome
         run: |
           # Configura tu WebDriver (por ejemplo, ChromeDriver)
           CHROMEDRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
@@ -32,7 +32,7 @@ jobs:
           mv chromedriver /usr/local/bin/
 
       - name: Run application
-        run: nohup java -jar -Dspring.profiles.active=test target/moviecards-0.0.1-SNAPSHOT.jar
+        run: nohup java -jar -Dspring.profiles.active=test target/moviecards-0.0.1-SNAPSHOT.jar & sleep 60
 
       - name: Run tests
         run: mvn clean verify
