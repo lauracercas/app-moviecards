@@ -1,77 +1,75 @@
-// package com.lauracercas.moviecards.endtoendtest;
+package com.lauracercas.moviecards.endtoendtest;
 
-// import org.junit.jupiter.api.AfterEach;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.openqa.selenium.By;
-// import org.openqa.selenium.WebDriver;
-// import org.openqa.selenium.WebElement;
-// import org.openqa.selenium.chrome.ChromeDriver;
-// import org.openqa.selenium.chrome.ChromeOptions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
-// import static com.lauracercas.moviecards.util.Messages.NEW_ACTOR_TITLE;
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.junit.jupiter.api.Assertions.assertTrue;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
-// public class ActorE2ETest {
+import static com.lauracercas.moviecards.util.Messages.NEW_ACTOR_TITLE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-//     private WebDriver driver;
+public class ActorE2ETest {
 
-//     @BeforeEach
-//     void setUp() {
-//         ChromeOptions options = new ChromeOptions();
-//          options.addArguments("--headless");
-//          options.addArguments("--no-sandbox");
-//          options.addArguments("--disable-dev-shm-usage");
-//         //  System.setProperty("webdriver.chrome.driver", System.getenv("CHROME_DRIVER_PATH"));
+    private WebDriver driver;
 
-//        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-//         driver = new ChromeDriver();
-//     }
+    @BeforeEach
+    void setUp() {
+        WebDriverManager.chromedriver().setup();
 
-//     @AfterEach
-//     void tearDown() {
-//         if (driver != null) {
-//             driver.quit();
-//         }
-//     }
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless"); 
 
-//     @Test
-//     public void testPageLoad() {
-//         driver.get("http://localhost:9002/actors/new");
-//         assertEquals("FichasPeliculasApp | Aplicación de gestión de fichas de películas", driver.getTitle());
+        driver = new ChromeDriver(options);
+    }
 
-//         assertTrue(driver.findElement(By.id("name")).isDisplayed());
-//         assertTrue(driver.findElement(By.id("birthDate")).isDisplayed());
-//         assertTrue(driver.findElement(By.id("country")).isDisplayed());
+    @AfterEach
+    void tearDown() {
+        driver.quit();
+    }
+    
+    @Test
+    public void testPageLoad() {
+        driver.get("http://localhost:9002/actors/new");
+        assertEquals("FichasPeliculasApp | Aplicación de gestión de fichas de películas", driver.getTitle());
 
-//     }
+        assertTrue(driver.findElement(By.id("name")).isDisplayed());
+        assertTrue(driver.findElement(By.id("birthDate")).isDisplayed());
+        assertTrue(driver.findElement(By.id("country")).isDisplayed());
 
-//     @Test
-//     public void testNewActorTitle() {
-//         driver.get("http://localhost:9002/actors/new");
-//         WebElement title = driver.findElement(By.className("title"));
-//         assertEquals(NEW_ACTOR_TITLE, title.getText());
-//     }
+    }
 
-//     @Test
-//     public void testListActors() {
-//         driver.get("http://localhost:9002/actors");
-//         WebElement title = driver.findElement(By.className("card-header"));
-//         assertEquals("Listado Actores", title.getText());
+    @Test
+    public void testNewActorTitle() {
+        driver.get("http://localhost:9002/actors/new");
+        WebElement title = driver.findElement(By.className("title"));
+        assertEquals(NEW_ACTOR_TITLE, title.getText());
+    }
 
-//         WebElement table = driver.findElement(By.className("table-hover"));
+    @Test
+    public void testListActors() {
+        driver.get("http://localhost:9002/actors");
+        WebElement title = driver.findElement(By.className("card-header"));
+        assertEquals("Listado Actores", title.getText());
 
-//         WebElement thead = table.findElement(By.tagName("thead"));
-//         assertTrue(thead.isDisplayed());
+        WebElement table = driver.findElement(By.className("table-hover"));
 
-//         WebElement headerRow = thead.findElement(By.tagName("tr"));
-//         assertEquals("Identificador", headerRow.findElements(By.tagName("th")).get(0).getText());
-//         assertEquals("Nombre", headerRow.findElements(By.tagName("th")).get(1).getText());
-//         assertEquals("Fecha Nacimiento", headerRow.findElements(By.tagName("th")).get(2).getText());
-//         assertEquals("Pais", headerRow.findElements(By.tagName("th")).get(3).getText());
-//         assertEquals("Editar", headerRow.findElements(By.tagName("th")).get(4).getText());
+        WebElement thead = table.findElement(By.tagName("thead"));
+        assertTrue(thead.isDisplayed());
 
-//     }
+        WebElement headerRow = thead.findElement(By.tagName("tr"));
+        assertEquals("Identificador", headerRow.findElements(By.tagName("th")).get(0).getText());
+        assertEquals("Nombre", headerRow.findElements(By.tagName("th")).get(1).getText());
+        assertEquals("Fecha Nacimiento", headerRow.findElements(By.tagName("th")).get(2).getText());
+        assertEquals("Pais", headerRow.findElements(By.tagName("th")).get(3).getText());
+        assertEquals("Editar", headerRow.findElements(By.tagName("th")).get(4).getText());
 
-// }
+    }
+
+}
