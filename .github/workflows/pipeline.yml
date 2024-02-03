@@ -37,10 +37,7 @@ jobs:
       - name: Run tests
         run: mvn clean verify
 
-      - name: Cleanup
-        run: |
-          # Cierra y libera recursos después de las pruebas
-          pkill -f chromedriver
+
 
 # jobs:
 #   tests:
