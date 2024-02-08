@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: descargar repostorio
+        uses: actions/checkout@v3
       - name: Install Google Chrome and ChromeDriver
         run: |
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -36,6 +38,8 @@ jobs:
           chmod +x chromedriver
           sudo mv chromedriver /usr/local/bin/
       
+      # - name: Build with Maven
+      #   run: mvn clean package -DskipTests -Ptest
     
       - name: Run application
         # run: nohup java -jar -Dspring.profiles.active=test target/moviecards-0.0.1-SNAPSHOT.jar & sleep 60
