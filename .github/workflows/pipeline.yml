@@ -35,12 +35,15 @@ jobs:
           unzip chromedriver.zip
           chmod +x chromedriver
           sudo mv chromedriver /usr/local/bin/
+      
+      - name: Build with Maven
+        run: mvn clean package -DskipTests -Ptest
 
       - name: Run application
         run: nohup java -jar -Dspring.profiles.active=test target/moviecards-0.0.1-SNAPSHOT.jar & sleep 60
 
       - name: Run tests
-        run: mvn clean verify
+        run: mvn clean verify -Ptest
 
 
   qa:
