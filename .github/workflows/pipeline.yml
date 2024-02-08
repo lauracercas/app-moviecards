@@ -19,7 +19,7 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DskipTests -Ptest
 
-  tests:
+  test:
     needs: build
     runs-on: ubuntu-latest
 
