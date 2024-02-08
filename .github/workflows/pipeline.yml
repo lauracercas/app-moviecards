@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  tests:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,6 +16,14 @@ jobs:
           java-version: "17"
           distribution: "adopt"
 
+      - name: Build with Maven
+        run: mvn clean package -DskipTests -Ptest
+
+  tests:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Install Google Chrome and ChromeDriver
         run: |
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -28,14 +36,22 @@ jobs:
           chmod +x chromedriver
           sudo mv chromedriver /usr/local/bin/
 
-      - name: Build with Maven
-        run: mvn clean package -DskipTests -Ptest
-
       - name: Run application
         run: nohup java -jar -Dspring.profiles.active=test target/moviecards-0.0.1-SNAPSHOT.jar & sleep 60
 
       - name: Run tests
         run: mvn clean verify
+
+
+  qa:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run QA tools
+        run: |
+          # Aquí puedes ejecutar herramientas de control de calidad, como SonarQube
+          echo "Running QA tools..."
 
 
 
