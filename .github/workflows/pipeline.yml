@@ -1,6 +1,6 @@
 name: CI
 
-on: [ push, pull_request ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -38,7 +38,7 @@ jobs:
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo dpkg -i google-chrome-stable_current_amd64.deb
           sudo apt --fix-broken install -y
-          
+
           CHROMEDRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
           curl -L -o chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
           unzip chromedriver.zip
@@ -50,7 +50,6 @@ jobs:
 
       - name: Run tests
         run: mvn clean verify -Ptest
-
 
   qa:
     needs: test
@@ -67,8 +66,8 @@ jobs:
           distribution: "adopt"
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests -Ptest
+        run: mvn clean package --add-opens java.base/java.lang=ALL-UNNAMED -DskipTests -Ptest
 
-#      - name: Sonarqube
-#        run: |
-#          mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -Dsonar.qualitygate.wait=true -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.java.jdkHome=${JAVA_HOME}
+      - name: Sonarqube
+        run: |
+          mvn sonar:sonar --add-opens java.base/java.lang=ALL-UNNAMED -Dsonar.host.url=http://sonarqube:9000 -Dsonar.qualitygate.wait=true -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.java.jdkHome=${JAVA_HOME}
