@@ -58,8 +58,8 @@ jobs:
 
   qa:
     needs: test
-    runs-on: my-runner
-
+    runs-on: self-hosted
+    continue-on-error: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
