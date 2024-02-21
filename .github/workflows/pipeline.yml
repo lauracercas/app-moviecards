@@ -52,6 +52,7 @@ jobs:
         run: mvn clean verify -Ptest
 
   qa:
+    needs: test
     runs-on: self-hosted
     continue-on-error: true
     steps:
