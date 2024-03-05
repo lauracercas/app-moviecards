@@ -1,5 +1,6 @@
-package com.lauracercas.moviecards.controller;
+package com.lauracercas.moviecards.unittest.controller;
 
+import com.lauracercas.moviecards.controller.ActorController;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.actor.ActorService;
@@ -17,7 +18,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 import static org.mockito.Mockito.*;
-
 
 class ActorControllerTest {
 

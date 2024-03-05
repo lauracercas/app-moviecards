@@ -1,52 +1,59 @@
 package com.lauracercas.moviecards.integrationtest.repositories;
 
-import com.lauracercas.moviecards.integrationtest.FlywayTestConfiguration;
-import com.lauracercas.moviecards.integrationtest.TestContainersDatabaseConfig;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.repositories.ActorJPA;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 
+import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@ActiveProfiles("test")
-@ContextConfiguration(classes = FlywayTestConfiguration.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ActorJPAIT extends TestContainersDatabaseConfig {
+public class ActorJPAIT {
 
     @Autowired
-    ActorJPA actorJPA;
+    private ActorJPA actorJPA;
 
     @Test
-    public void debeCrearYRecuperarActor() {
-        // Crear un nuevo actor
+    public void testSaveActor() {
+        // given
         Actor actor = new Actor();
-        actor.setName("John Doe");
+        actor.setName("actor");
+        actor.setBirthDate(new Date());
 
-        // Guardar el actor en la base de datos
-        actorJPA.save(actor);
+        // when
+        Actor savedActor = actorJPA.save(actor);
 
-        // Recuperar el actor por el ID
-        Optional<Actor> actorRecuperado = actorJPA.findById(actor.getId());
+        // then
+        assertNotNull(savedActor.getId()); // verifica que se asignó un ID
 
-        // Verificar que el actor se haya guardado correctamente
-        Assertions.assertTrue(actorRecuperado.isPresent());
-        assertEquals(actor.getName(), actorRecuperado.get().getName());
+        // when
+        Optional<Actor> foundActor = actorJPA.findById(savedActor.getId());
+
+        // then
+        assertTrue(foundActor.isPresent()); // verifica que el actor se puede recuperar de la base de datos
+        assertEquals(savedActor, foundActor.get()); // verifica que el actor recuperado es el mismo que el actor
+                                                    // guardado
     }
 
-//    @Test
-//    void shouldFindActor() {
-//        Actor actor = actorJPA.findById(1).orElse(null);
-//        assert actor != null;
-//        assertEquals("Actor1",actor.getName());
-//
-//    }
+    @Test
+    public void testFindById() {
+        // given
+        Actor actor = new Actor();
+        actor.setName("actor");
+        actor.setBirthDate(new Date());
+        Actor savedActor = actorJPA.save(actor);
+
+        // when
+        Optional<Actor> foundActor = actorJPA.findById(savedActor.getId());
+
+        // then
+        assertTrue(foundActor.isPresent());
+        assertEquals(savedActor, foundActor.get()); 
+    }
 }
