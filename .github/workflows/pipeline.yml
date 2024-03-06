@@ -70,7 +70,7 @@ jobs:
 #
 #      - name: Sonarqube
 #        run: |
-#          mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -Dsonar.qualitygate.wait=true -Dsonar.login=admin -Dsonar.password=sonar
+#          mvn sonar:sonar -Dsonar.host.url=http://sonarqube:8089 -Dsonar.qualitygate.wait=true -Dsonar.login=admin -Dsonar.password=sonar
 
   deploy:
     runs-on: ubuntu-latest
