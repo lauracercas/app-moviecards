@@ -86,6 +86,12 @@
 				<spring.properties.file>application-test.properties</spring.properties.file>
 			</properties>
 		</profile>
+		<profile>
+			<id>deploy</id>
+			<properties>
+				<spring.properties.file>application-deploy.properties</spring.properties.file>
+			</properties>
+		</profile>
 	</profiles>
 
 	<build>
