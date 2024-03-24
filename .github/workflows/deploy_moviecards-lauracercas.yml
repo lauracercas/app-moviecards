@@ -6,7 +6,7 @@ name: Build and deploy JAR app to Azure Web App - moviecards-java
 on:
   push:
     branches:
-      - deploy
+      - main
   workflow_dispatch:
 
 jobs:
