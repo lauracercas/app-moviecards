@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy JAR app to Azure Web App - moviecards-lauracercas
+name: Build and deploy JAR app to Azure Web App - moviecards-java
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
           java-version: '11'
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests -Pdeploy
+        run: mvn clean install -DskipTests -Pdeploy
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
       
     steps:
@@ -47,7 +47,9 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'moviecards-lauracercas'
-          slot-name: 'Production'
+          app-name: 'moviecards-java'
+          slot-name: 'production'
           package: '*.jar'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2C5BF63B787348FD8F1F697394270559 }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_bc740d85a59f42bdbde058d65bdc1713 }}
+        env:
+          SPRING_PROFILES_ACTIVE: deploy
