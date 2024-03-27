@@ -1,120 +1,121 @@
 name: CI
 
-on: 
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+on: push
 
 
 jobs:
- build:
-   runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-   steps:
-     - name: Checkout code
-       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-     - name: Set up JDK 11
-       uses: actions/setup-java@v2
-       with:
-         java-version: "11"
-         distribution: "adopt"
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+          distribution: "adopt"
 
-     - name: Build with Maven
-       run: mvn clean package -DskipTests -Ptest
+      - name: Build with Maven
+        run: mvn clean package -DskipTests -Ptest
 
-     - name: Upload artifact for deployment job
-       uses: actions/upload-artifact@v3
-       with:
-         name: moviecards-app
-         path: '${{ github.workspace }}/target/*.jar'
- #
- #  test:
- #    needs: build
- #    runs-on: ubuntu-latest
- #
- #    steps:
- #      - name: Checkout code
- #        uses: actions/checkout@v2
- #
- #      - name: Set up JDK 11
- #        uses: actions/setup-java@v2
- #        with:
- #          java-version: "11"
- #          distribution: "adopt"
- #
- #      - name: Install Google Chrome and ChromeDriver
- #        run: |
- #          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
- #          sudo dpkg -i google-chrome-stable_current_amd64.deb
- #          sudo apt --fix-broken install -y
- #
- #          CHROMEDRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
- #          curl -L -o chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
- #          unzip chromedriver.zip
- #          chmod +x chromedriver
- #          sudo mv chromedriver /usr/local/bin/
- #
- #      - name: Run application
- #        run: mvn spring-boot:run -Dspring-boot.run.profiles=test & sleep 60
- #
- #      - name: Run tests
- #        run: mvn clean verify -Ptest
- #
- #  qa:
- #    needs: test
- #    runs-on: self-hosted
- #    continue-on-error: true
- #    steps:
- #      - name: Checkout code
- #        uses: actions/checkout@v2
- #
- #      - name: Set up JDK 11
- #        uses: actions/setup-java@v2
- #        with:
- #          java-version: "11"
- #          distribution: "adopt"
- #
- #      - name: Build with Maven
- #        run: mvn clean package -DskipTests -Ptest
- #
- #      - name: Sonarqube
- #        run: |
- #          mvn sonar:sonar -Dsonar.host.url=http://sonarqube:8089 -Dsonar.qualitygate.wait=true -Dsonar.login=admin -Dsonar.password=sonar
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: moviecards-app
+          path: "${{ github.workspace }}/target/*.jar"
 
- deploy:
-   runs-on: ubuntu-latest
-   needs: build
-   #    needs: qa
-   #    if: github.ref == 'refs/heads/master'
-   environment:
-     name: 'production'
-     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-   permissions:
-     id-token: write #This is required for requesting the JWT
-   steps:
-     - name: Checkout code
-       uses: actions/checkout@v2
-     - name: Download artifact from build job
-       uses: actions/download-artifact@v3
-       with:
-         name: moviecards-app
-     - name: Deploy to Azure Web App
-       id: deploy-to-webapp
-       uses: azure/webapps-deploy@v2
-       with:
-         app-name: 'moviecards-lauracercas'
-         slot-name: 'production'
-         package: '*.jar'
-         publish-profile: ${{ secrets.AzureAppService_PublishProfile_ca6c1f45141d4b259b01edc55a4544a1 }}
+  test:
+    needs: build
+    runs-on: ubuntu-latest
 
-#      - name: Create .war
-#        run: |
-#          mvn clean package -DskipTests -Ptest
-#      - name: Deploy in Azure
-#        uses: Azure/webapps-deploy@v2
-#        with:
-#          app-name: moviecards-lauracercas
-#          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-#          package: target/*.war
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+          distribution: "adopt"
+
+      - name: Install Google Chrome and ChromeDriver
+        run: |
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          sudo apt --fix-broken install -y
+
+          CHROMEDRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          curl -L -o chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
+          unzip chromedriver.zip
+          chmod +x chromedriver
+          sudo mv chromedriver /usr/local/bin/
+
+      - name: Run application to integration tests
+        run: mvn spring-boot:run -Dspring-boot.run.profiles=test & sleep 60
+
+      - name: Run tests
+        run: mvn clean verify -Ptest
+
+  qa:
+    needs: test
+    runs-on: self-hosted
+    continue-on-error: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+          distribution: "adopt"
+
+      - name: Build with Maven skiping tests and with test profile
+        run: mvn clean package -DskipTests -Ptest
+
+      - name: Sonarqube
+        run: |
+          mvn sonar:sonar -Dsonar.host.url=http://sonarqube:8089 -Dsonar.qualitygate.wait=true -Dsonar.login=admin -Dsonar.password=sonar
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: qa
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: "production"
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java version
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+          distribution: "adopt"
+
+      - name: Build with Maven skiping tests and with deploy profile
+        run: mvn clean install -DskipTests -Pdeploy
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-app
+          path: "${{ github.workspace }}/target/*.jar"
+
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: java-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "moviecards-java"
+          slot-name: "production"
+          package: "*.jar"
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_bc740d85a59f42bdbde058d65bdc1713 }}
+        env:
+          SPRING_PROFILES_ACTIVE: deploy
